@@ -127,9 +127,10 @@ window.addEventListener('keydown', (event) => {
             keys.d.pressed = true
             break
         case 'Space':
-            projectiles.push(new Projectile({
+            projectiles.push(
+                new Projectile({
                 position: {
-                    x: player.position.x,
+                    x: player.position.x + 30,
                     y: player.position.y
                 },
                 velocity: {
