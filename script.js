@@ -291,6 +291,10 @@ function animate() {
         const projectile = projectiles[i]
         projectile.update()
 
+        if (circleTriangleCollision(asteroid, player.getVertices())) {
+            
+        }
+
         // Remove projectiles off screen
         if (
             projectile.position.x + projectile.radius < 0 ||
