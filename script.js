@@ -160,6 +160,17 @@ window.setInterval(() => {
     )
 }, 3000)
 
+function circleCollision(circle1, circle2) {
+    const xDifference = circle2.position.x - circle1.position.x
+    const yDifference = circle2.position.y - circle1.position.y
+
+    const distance = Math.sqrt(xDifference * xDifference + yDifference * yDifference)
+    if (distance <= circle1.radius + circle2.radius) {
+        return true
+    }
+    return false
+}
+
 function animate() {
     window.requestAnimationFrame(animate) 
     c.fillStyle = 'black'
