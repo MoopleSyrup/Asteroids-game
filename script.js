@@ -83,6 +83,7 @@ const keys = {
 const SPEED = 3  //player speed value
 const ROTATIONAL_SPEED = 0.03 //player rotation speed value
 const FRICTION = 0.97 //player friction value
+const PROJECTILE_SPEED = 3
 
 const projectiles = []
 
@@ -95,7 +96,16 @@ function animate() {
 
     for (let i = projectiles.length - 1; i >= 0; i--) {
         const projectile = projectiles[i]
-        projectile.update() 
+        projectile.update()
+
+        // Remove projectiles off screen
+        if (projectile.position.x + projectile.radius < 0 ||
+            projectile.position.x - projectile.radius > canvas.width ||
+            projectile.position.y - projectile.radius > canvas.height ||
+            projectile.position.y + projectile.radius < 0
+        ) {
+            projectiles.splice(i, 1)
+        }
     }
 
     if (keys.w.pressed) {
@@ -134,12 +144,17 @@ window.addEventListener('keydown', (event) => {
                     y: player.position.y + Math.sin(player.rotation) * 30,
                 },
                 velocity: {
-                    x: Math.cos(player.rotation),
-                    y: Math.sin(player.rotation),
+                    x: Math.cos(player.rotation) * PROJECTILE_SPEED, // How fast the projectiles go
+                    y: Math.sin(player.rotation) * PROJECTILE_SPEED,
                 },
-            }))
+            })
+        )
+        console.log(projectiles)
+        break
     }
 })
+
+
 window.addEventListener('keyup', (event) => {
     switch (event.code) {
         case 'KeyW':
