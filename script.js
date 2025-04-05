@@ -52,6 +52,8 @@ class Projectile {
         c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2, false)
         c.closePath()
         c.fillStyle = 'white'
+        c.shadowColor = 'white'
+        c.shadowBlur = 10
         c.fill()
     }
     update() {
@@ -88,7 +90,7 @@ const PROJECTILE_SPEED = 3
 const projectiles = []
 
 function animate() {
-    window.requestAnimationFrame(animate)
+    window.requestAnimationFrame(animate) 
     c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
 
@@ -149,7 +151,6 @@ window.addEventListener('keydown', (event) => {
                 },
             })
         )
-        console.log(projectiles)
         break
     }
 })
