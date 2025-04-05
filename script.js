@@ -132,7 +132,7 @@ const PROJECTILE_SPEED = 3
 const projectiles = []
 const asteroids = []
 
-window.setInterval(() => {
+const intervalId = window.setInterval(() => {
     const index = Math.floor(Math.random() * 4)
     let x, y
     let vx, vy
@@ -311,6 +311,7 @@ function animate() {
         if (circleTriangleCollision(asteroid, player.getVertices())) {
             console.log('GAME OVER')
             window.cancelAnimationFrame(animationId)
+            clearInterval(intervalId)
         }
 
         // Projectiles
