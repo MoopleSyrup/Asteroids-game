@@ -41,6 +41,26 @@ class Player {
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
         }
+
+        getVertices() {
+            const cos = Math.cos(this.rotation)
+            const sin = Math.sin(this.rotation)
+
+            return [
+                {
+                    x: this.position.x + cos * 30 - sin * 10,
+                    y: this.position.y + sin * 30 - cos * 10,
+                },
+                {
+                    x: this.position.x + cos * - 10 - sin * 10,
+                    y: this.position.y + sin * - 10 + cos * 10,
+                },
+                {
+                    x: this.position.x + cos * - 10 - sin - 10,
+                    y: this.position.y + sin * - 10 + cos - 10,
+                },
+            ]
+        }
     }
 
 class Projectile {
