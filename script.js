@@ -130,12 +130,12 @@ window.addEventListener('keydown', (event) => {
             projectiles.push(
                 new Projectile({
                 position: {
-                    x: player.position.x + 30,
-                    y: player.position.y
+                    x: player.position.x + Math.cos(player.rotation) * 30, // Changes where the projectiles shoot from the player
+                    y: player.position.y + Math.sin(player.rotation) * 30,
                 },
                 velocity: {
-                    x: 1,
-                    y: 0
+                    x: Math.cos(player.rotation),
+                    y: Math.sin(player.rotation),
                 },
             }))
     }
