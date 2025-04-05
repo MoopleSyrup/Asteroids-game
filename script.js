@@ -214,67 +214,79 @@ function isPointOnLineSegment(x, y, start, end) {
     )
 }
 
-function animate() {
-    const animationId = window.requestAnimationFrame(animate)
-    c.fillStyle = 'black'
-    c.fillRect(0, 0, canvas.width, canvas.height)
+let score = 0;  // Initialize the score outside of the animate function.
 
-    player.update()
+function animate() {
+    const animationId = window.requestAnimationFrame(animate);
+    c.fillStyle = 'black';
+    c.fillRect(0, 0, canvas.width, canvas.height);
+
+    player.update();
 
     for (let i = projectiles.length - 1; i >= 0; i--) {
-        const projectile = projectiles[i]
-        projectile.update()
+        const projectile = projectiles[i];
+        projectile.update();
 
+        // Remove projectiles off screen
         if (
             projectile.position.x + projectile.radius < 0 ||
             projectile.position.x - projectile.radius > canvas.width ||
             projectile.position.y - projectile.radius > canvas.height ||
             projectile.position.y + projectile.radius < 0
         ) {
-            projectiles.splice(i, 1)
+            projectiles.splice(i, 1);
         }
     }
 
+    // Asteroid Management
     for (let i = asteroids.length - 1; i >= 0; i--) {
-        const asteroid = asteroids[i]
-        asteroid.update()
+        const asteroid = asteroids[i];
+        asteroid.update();
 
         if (circleTriangleCollision(asteroid, player.getVertices())) {
-            console.log('GAME OVER')
-            window.cancelAnimationFrame(animationId)
-            clearInterval(intervalId)
+            console.log('GAME OVER');
+            window.cancelAnimationFrame(animationId);
+            clearInterval(intervalId);
         }
 
+        // Projectiles
         for (let j = projectiles.length - 1; j >= 0; j--) {
-            const projectile = projectiles[j]
+            const projectile = projectiles[j];
+
             if (circleCollision(asteroid, projectile)) {
-                asteroids.splice(i, 1)
-                projectiles.splice(j, 1)
-                break
+                asteroids.splice(i, 1);  // Remove the asteroid
+                projectiles.splice(j, 1);  // Remove the projectile
+                score += 10;  // Add points
+                console.log(`+10 points. Total score: ${score}`);  // Log the updated score
+                break;  // Break out of the loop once the projectile hits the asteroid
             }
         }
 
+        // Remove asteroids off screen
         if (
             asteroid.position.x + asteroid.radius < 0 ||
             asteroid.position.x - asteroid.radius > canvas.width ||
             asteroid.position.y - asteroid.radius > canvas.height ||
             asteroid.position.y + asteroid.radius < 0
         ) {
-            asteroids.splice(i, 1)
+            asteroids.splice(i, 1);
         }
     }
 
     if (keys.w.pressed) {
-        player.velocity.x = Math.cos(player.rotation) * SPEED
-        player.velocity.y = Math.sin(player.rotation) * SPEED
-    } else {
-        player.velocity.x *= FRICTION
-        player.velocity.y *= FRICTION
+        player.velocity.x = Math.cos(player.rotation) * SPEED;
+        player.velocity.y = Math.sin(player.rotation) * SPEED;
+    } else if (!keys.w.pressed) {
+        player.velocity.x *= FRICTION;
+        player.velocity.y *= FRICTION;
     }
 
-    if (keys.d.pressed) player.rotation += ROTATIONAL_SPEED
-    else if (keys.a.pressed) player.rotation -= ROTATIONAL_SPEED
+    if (keys.d.pressed) player.rotation += ROTATIONAL_SPEED;
+    else if (keys.a.pressed) player.rotation -= ROTATIONAL_SPEED;
 }
+
+
+
 
 animate()
 
