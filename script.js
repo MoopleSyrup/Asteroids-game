@@ -62,6 +62,26 @@ class Projectile {
         this.position.y += this.velocity.y
     }
 }
+class Asteroid {
+    constructor({ position, velocity }) {
+        this.position = position
+        this.velocity = velocity
+        this.radius = 50 * Math.random() + 10 // Maths random gives a number between 0 and 1, so we multiply it by 50 to get a number between 0 and 50, then add 10 to get a number between 10 and 60
+    }
+    draw() {
+        c.beginPath()
+        c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2, false)
+        c.closePath()
+        c.strokeStyle = 'white'
+        c.stroke()
+    }
+    update() {
+        this.draw()
+        this.position.x += this.velocity.x
+        this.position.y += this.velocity.y
+    }
+}
+
 
 const player = new Player({
     position: {x: canvas.width / 2, y: canvas.height / 2},
@@ -88,6 +108,21 @@ const FRICTION = 0.97 //player friction value
 const PROJECTILE_SPEED = 3
 
 const projectiles = []
+const asteroids = []
+
+window.setInterval(() => {
+    asteroids.push(
+        new Asteroid({ position: {
+            x: 0,
+            y: 0,
+        },
+        velocity: {
+            x: 1,
+            y: 0,
+        },
+        })
+    )
+}, 3000)
 
 function animate() {
     window.requestAnimationFrame(animate) 
@@ -109,6 +144,13 @@ function animate() {
             projectiles.splice(i, 1)
         }
     }
+
+    // Asteroid Management
+    for (let i = asteroids.length - 1; i >= 0; i--) {
+        const asteroid = asteroids[i]
+        asteroid.update()
+    }
+
 
     if (keys.w.pressed) {
         player.velocity.x = Math.cos(player.rotation) * SPEED
