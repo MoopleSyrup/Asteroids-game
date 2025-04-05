@@ -113,24 +113,27 @@ const asteroids = []
 window.setInterval(() => {
     const index = Math.floor(Math.random() * 4)
     let x, y
+    let vx, vy
     let radius = 50 * Math.random() + 10
 
     switch (index) {
         case 0: //left side of screen
         x = 0 - radius
+        y = 0 - Math.random() * canvas.height
+        vx = 1
+        vy = 0
         break
-
     }
 
     asteroids.push(
         new Asteroid({
             position: {
-                x: 0,
-                y: 0,
+                x: x,
+                y: y,
             },
             velocity: {
-                x: 1,
-                y: 0,
+                x: vx,
+                y: xy,
             },
             radius,
         })
