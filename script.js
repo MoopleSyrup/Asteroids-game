@@ -63,10 +63,10 @@ class Projectile {
     }
 }
 class Asteroid {
-    constructor({ position, velocity }) {
+    constructor({ position, velocity, radius }) {
         this.position = position
         this.velocity = velocity
-        this.radius = 50 * Math.random() + 10 // Maths random gives a number between 0 and 1, so we multiply it by 50 to get a number between 0 and 50, then add 10 to get a number between 10 and 60
+        this.radius = radius
     }
     draw() {
         c.beginPath()
@@ -111,15 +111,28 @@ const projectiles = []
 const asteroids = []
 
 window.setInterval(() => {
+    const index = Math.floor(Math.random() * 4)
+    let x, y
+    let radius = 50 * Math.random() + 10
+
+    switch (index) {
+        case 0: //left side of screen
+        x = 0 - radius
+        break
+
+    }
+
     asteroids.push(
-        new Asteroid({ position: {
-            x: 0,
-            y: 0,
-        },
-        velocity: {
-            x: 1,
-            y: 0,
-        },
+        new Asteroid({
+            position: {
+                x: 0,
+                y: 0,
+            },
+            velocity: {
+                x: 1,
+                y: 0,
+            },
+            radius,
         })
     )
 }, 3000)
