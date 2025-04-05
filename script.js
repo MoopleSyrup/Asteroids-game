@@ -281,7 +281,7 @@ function isPointOnLineSegment(x, y, start, end) {
 }
 
 function animate() {
-    window.requestAnimationFrame(animate) 
+    const animationId = window.requestAnimationFrame(animate) 
     c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
 
@@ -291,9 +291,6 @@ function animate() {
         const projectile = projectiles[i]
         projectile.update()
 
-        if (circleTriangleCollision(asteroid, player.getVertices())) {
-            
-        }
 
         // Remove projectiles off screen
         if (
@@ -310,6 +307,11 @@ function animate() {
     for (let i = asteroids.length - 1; i >= 0; i--) {
         const asteroid = asteroids[i]
         asteroid.update()
+
+        if (circleTriangleCollision(asteroid, player.getVertices())) {
+            console.log('GAME OVER')
+            window.clearAnimationFrame(animationId)
+        }
 
         // Projectiles
         for (let j = projectiles.length - 1; j >= 0; j--) {
