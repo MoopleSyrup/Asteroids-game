@@ -310,7 +310,7 @@ function animate() {
 
         if (circleTriangleCollision(asteroid, player.getVertices())) {
             console.log('GAME OVER')
-            window.clearAnimationFrame(animationId)
+            window.cancelAnimationFrame(animationId)
         }
 
         // Projectiles
