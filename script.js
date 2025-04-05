@@ -18,9 +18,11 @@ class Player {
         c.rotate(this.rotation)
         c.translate(-this.position.x, -this.position.y)
 
+        c.beginPath()
         c.arc(this.position.x, this.position.y, 5, 0, Math.PI * 2, false)
         c.fillStyle = 'red'
         c.fill()
+        c.closePath()
         
         /* c.fillRect(this.position.x, this.position.x, 100, 100) */
         c.beginPath()
@@ -118,11 +120,29 @@ window.setInterval(() => {
 
     switch (index) {
         case 0: //left side of screen
-        x = 0 - radius
-        y = 0 - Math.random() * canvas.height
-        vx = 1
-        vy = 0
-        break
+            x = 0 - radius
+            y = 0 - Math.random() * canvas.height
+            vx = 1
+            vy = 0
+            break
+        case 1: //bottom side of screen
+            x = Math.random() * canvas.width
+            y = canvas.height + radius
+            vx = 0
+            vy = -1
+            break
+        case 2: //right side of screen
+            x = canvas.width + radius
+            y = Math.random() * canvas.height
+            vx = -1
+            vy = 0
+            break
+        case 3: //top side of screen
+            x = Math.random() * canvas.width
+            y = 0 - radius
+            vx = 0
+            vy = 1
+            break
     }
 
     asteroids.push(
@@ -133,7 +153,7 @@ window.setInterval(() => {
             },
             velocity: {
                 x: vx,
-                y: xy,
+                y: vy,
             },
             radius,
         })
@@ -152,7 +172,8 @@ function animate() {
         projectile.update()
 
         // Remove projectiles off screen
-        if (projectile.position.x + projectile.radius < 0 ||
+        if (
+            projectile.position.x + projectile.radius < 0 ||
             projectile.position.x - projectile.radius > canvas.width ||
             projectile.position.y - projectile.radius > canvas.height ||
             projectile.position.y + projectile.radius < 0
@@ -165,8 +186,16 @@ function animate() {
     for (let i = asteroids.length - 1; i >= 0; i--) {
         const asteroid = asteroids[i]
         asteroid.update()
+    
+    if (
+        asteroid.position.x + asteroid.radius < 0 ||
+        asteroid.position.x - asteroid.radius > canvas.width ||
+        asteroid.position.y - asteroid.radius > canvas.height ||
+        asteroid.position.y + asteroid.radius < 0
+    ) {
+        asteroids.splice(i, 1)
     }
-
+}
 
     if (keys.w.pressed) {
         player.velocity.x = Math.cos(player.rotation) * SPEED
